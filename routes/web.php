@@ -34,7 +34,7 @@ Route::group(['middleware' => ['auth']], function () {                          
         Route::post('follow',[UserFollowController::class, 'store'])->name('user.follow');
         Route::delete('unfollow',[UserFollowController::class,'destroy'])->name('user.unfollow');
         Route::get('folloeings',[UsersController::class,'followings'])->name('users.followings');
-        Route::get('followers',[UsersController::class,'followers'])->name('users.follower');
+        Route::get('followers',[UsersController::class,'followers'])->name('users.followers');
     });
     
     Route::resource('users', UsersController::class, ['only' => ['index', 'show']]);      // 追記
