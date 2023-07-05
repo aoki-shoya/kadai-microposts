@@ -15,22 +15,28 @@
                             <a class="link link-hover text-info" href="{{ route('users.show', $micropost->user->id) }}">{{ $micropost->user->name }}</a>
                             <span class="text-muted text-gray-500">posted at {{ $micropost->created_at }}</span>
                         </div>
-                        <div>
+                        <div class="flex">
                             {{-- 投稿内容 --}}
                             <p class="mb-0">{!! nl2br(e($micropost->content)) !!}</p>
                         </div>
                         <div>
-                            @if(Auth::id() == $micropost->user_id)
-                                <form method="POST" action="{{ route('microposts.destroy',$micropost->id) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-error btn-sm normal-case"
-                                        onclick="return confirm('Delete id = {{ $micropost->id }} ?')">Delete</button>
-                                </form>
-                                @include('micropost_favorite.add_favorite_button')
-                            @else 
-                                @include('micropost_favorite.add_favorite_button')
-                            @endif
+                            <div class="flex mt-1 gap-3 items-center">
+                                <button onclick="location.href='{{ route('threads',$micropost->id) }}'" class="bg-blue-400 hover:bg-blue-300 text-white rounded px-2 py-1 text-xs">リプライ</button>
+                                {{-- $micropost->threads_count() --}}
+                                @if(Auth::id() == $micropost->user_id)
+                                    <form method="POST" action="{{ route('microposts.destroy',$micropost->id) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" onclick="return confirm('”{{ $micropost->content }}” を削除しますか？')">
+                                            <i class="fas fa-trash-alt" style="color:red"></i></button>
+                                    </form>
+                                    {{-- 編集ボタンのフォーム --}}
+                                    <a href="{{ route('microposts.edit',$micropost->id) }}" class="fas fa-pen" style="color:#64a1ff"></i></a>
+                                    @include('micropost_favorite.add_favorite_button')
+                                @else 
+                                    @include('micropost_favorite.add_favorite_button')
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </li>

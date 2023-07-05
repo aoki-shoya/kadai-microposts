@@ -12,22 +12,24 @@
 
             <div class="form-control my-4">
                 <label for="email" class="label">
-                    <span class="label-text">Email</span>
+                    <span class="label-text">メールアドレス</span>
                 </label>
                 <input type="email" name="email" class="input input-bordered w-full">
             </div>
 
             <div class="form-control my-4">
                 <label for="password" class="label">
-                    <span class="label-text">Password</span>
+                    <span class="label-text">パスワード</span>
                 </label>
                 <input type="password" name="password" class="input input-bordered w-full">
             </div>
 
-            <button type="submit" class="btn btn-primary btn-block normal-case">Log in</button>
+            <button type="submit" class="btn btn-primary btn-block normal-case">ログイン</button>
 
             {{-- ユーザ登録ページへのリンク --}}
-            <p class="mt-2">New user? <a class="link link-hover text-info" href="{{ route('register') }}">Sign up now!</a></p>
+            <div class="mt-3">
+                <a class="link link-hover text-info" href="{{ route('register') }}">新規登録はこちらから</a>
+            </div>
         </form>
     </div>
 @endsection

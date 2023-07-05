@@ -26,7 +26,6 @@ class UsersController extends Controller
         
         $microposts = $user->microposts()->orderBy('created_at','desc')->paginate(10);
         
-        
         return view('users.show', [
            'user' => $user, 
            'microposts' => $microposts,
@@ -73,5 +72,62 @@ class UsersController extends Controller
            'user' => $user,
            'microposts' => $favorites,
         ]);
+    }
+    
+    public function profile($id)
+    {
+        $user = User::find($id);
+        
+        $user->loadRelationshipCounts();
+        $message = "";
+        
+        return view('users.profile', [
+            'user' => $user,   
+            'message' => $message,
+        ]);
+    }
+    
+    public function edit($id)
+    {
+        $user = User::find($id);
+        
+        if(\Auth::id() === $user->id) {
+            return view('users.edit', [
+                'user' => $user, 
+            ]);
+        }
+        else {
+            return back();
+        }
+    }
+    
+    public function update(Request $request,$id)
+    {
+        $user = User::findOrFail($id);
+        $user->loadRelationshipCounts();
+        
+        
+        if(\Auth::id() === $user->id) { //ログインしているIDと受け取ったIDが同じだったら
+        
+            $request->validate([ //受け取った値のバリデーション
+                'name'=>'required',
+                'age'=>'required',
+                'gender' => 'required'
+            ]);
+            
+            $user->name = $request->name;
+            $user->age = $request->age;
+            $user->gender = $request->gender;
+            $user->save();
+            
+            $message = 'プロフィールを更新しました';
+            
+            return view('users.profile',[
+                'user' => $user,
+                'message' => $message,
+            ]);
+        }
+        
+        return redirect('/');
     }
 }
